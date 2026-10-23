@@ -104,6 +104,43 @@ python main.py --cpu 90 --mem 80 --disk 85 --interval 15
 
 ---
 
+## Docker & Docker Compose (Secure Mode)
+
+The application is fully containerized and pre-configured to monitor the host system securely:
+
+### 1. One-Command Deploy (via script)
+```bash
+bash ../scripts/deploy-monitor.sh
+```
+
+### 2. Manual Docker Compose
+```bash
+cd monitor-app
+
+# Build and start in background
+docker compose up -d --build
+
+# View real-time streaming JSON logs
+docker compose logs -f
+
+# Check container health and status
+docker compose ps
+
+# Stop the container
+docker compose down
+```
+
+### Security Hardening Profile
+- **Unprivileged User**: Runs as non-root `appuser` (UID/GID `10001:10001`).
+- **Read-Only Root Filesystem**: `read_only: true` prevents runtime filesystem tampering.
+- **Dropped Capabilities**: `cap_drop: [ALL]` drops all Linux capabilities.
+- **No Privilege Escalation**: `no-new-privileges:true` prevents `setuid`/`setgid` binary execution.
+- **Ephemeral Scratchpad**: Restricted `tmpfs` mounted at `/tmp` (`noexec,nosuid`).
+- **Host Namespace Telemetry**: Uses `pid: host` and `network_mode: host` to inspect host metrics without needing root privileges.
+- **Log Rotation**: Capped at 3 files of 10MB each (`json-file`) to prevent host disk exhaustion.
+
+---
+
 ## Systemd Service Configuration (Linux / EC2)
 
 Create `/etc/systemd/system/sysmon.service`:

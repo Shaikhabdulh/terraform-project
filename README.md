@@ -4,8 +4,9 @@ A repository containing modular infrastructure monitoring tools, deployment scri
 
 ## Components
 
-- **[`monitor-app/`](./monitor-app/)**: Modular Linux & AWS EC2 system resource monitor (CPU, memory, disk, network, process tracking, AWS IMDSv2 metadata).
+- **[`monitor-app/`](./monitor-app/)**: Modular Linux & AWS EC2 system resource monitor (CPU, memory, disk, network, process tracking, AWS IMDSv2 metadata). Features a hardened Dockerfile and Docker Compose setup in secure mode.
 - **[`scripts/install-docker.sh`](./scripts/install-docker.sh)**: Non-interactive unattended installer for Docker Engine and Docker Compose v2 for Ubuntu and Debian.
+- **[`scripts/deploy-monitor.sh`](./scripts/deploy-monitor.sh)**: One-command automated deployment script for launching `monitor-app` with Docker Compose.
 
 ## Getting Started
 

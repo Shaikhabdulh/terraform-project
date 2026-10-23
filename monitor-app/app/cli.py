@@ -1,6 +1,7 @@
 """Command-line interface and main monitoring event loop."""
 import argparse
 import logging
+import os
 import platform
 import signal
 import sys
@@ -22,12 +23,18 @@ log = logging.getLogger("sysmon")
 
 
 def build_parser():
-    """Construct command-line argument parser."""
+    """Construct command-line argument parser with environment variable defaults."""
+    env_interval = int(os.environ.get("SYSMON_INTERVAL", DEFAULT_INTERVAL))
+    env_cpu = float(os.environ.get("SYSMON_CPU_THRESHOLD", DEFAULT_CPU_THRESHOLD))
+    env_mem = float(os.environ.get("SYSMON_MEM_THRESHOLD", DEFAULT_MEM_THRESHOLD))
+    env_disk = float(os.environ.get("SYSMON_DISK_THRESHOLD", DEFAULT_DISK_THRESHOLD))
+    env_json = os.environ.get("SYSMON_JSON", "false").lower() in ("true", "1", "yes")
+
     ap = argparse.ArgumentParser(description="Simple Linux/AWS system monitor")
     ap.add_argument(
         "--interval",
         type=int,
-        default=DEFAULT_INTERVAL,
+        default=env_interval,
         help=f"Seconds between samples (default: {DEFAULT_INTERVAL})",
     )
     ap.add_argument(
@@ -38,24 +45,25 @@ def build_parser():
     ap.add_argument(
         "--json",
         action="store_true",
+        default=env_json,
         help="Emit one JSON line per sample",
     )
     ap.add_argument(
         "--cpu",
         type=float,
-        default=DEFAULT_CPU_THRESHOLD,
+        default=env_cpu,
         help=f"CPU alert threshold %% (default: {DEFAULT_CPU_THRESHOLD})",
     )
     ap.add_argument(
         "--mem",
         type=float,
-        default=DEFAULT_MEM_THRESHOLD,
+        default=env_mem,
         help=f"Memory alert threshold %% (default: {DEFAULT_MEM_THRESHOLD})",
     )
     ap.add_argument(
         "--disk",
         type=float,
-        default=DEFAULT_DISK_THRESHOLD,
+        default=env_disk,
         help=f"Disk alert threshold %% (default: {DEFAULT_DISK_THRESHOLD})",
     )
     return ap

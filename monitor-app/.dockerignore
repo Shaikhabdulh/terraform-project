@@ -1,0 +1,24 @@
+# Git & repo files
+.git
+.gitignore
+
+# Tests & caches
+tests/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.venv/
+
+# Environment and sensitive files
+.env*
+*.pem
+*.key
+
+# Temporary files
+*.swp
+*.log
+.DS_Store
+Thumbs.db

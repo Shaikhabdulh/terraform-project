@@ -1,0 +1,36 @@
+services:
+  sysmon:
+    container_name: monitor-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: monitor-app:latest
+    restart: unless-stopped
+
+    # Host namespaces required for monitoring the host OS rather than isolated container metrics
+    pid: host
+    network_mode: host
+
+    # Secure Mode Hardening
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+
+    # Configuration via environment variables
+    environment:
+      - SYSMON_INTERVAL=10
+      - SYSMON_CPU_THRESHOLD=85.0
+      - SYSMON_MEM_THRESHOLD=85.0
+      - SYSMON_DISK_THRESHOLD=85.0
+      - SYSMON_JSON=true
+
+    # Log rotation limits to prevent container logs from consuming disk space
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
