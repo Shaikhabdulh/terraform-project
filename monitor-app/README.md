@@ -42,13 +42,23 @@ monitor-app/
 │   ├── collector.py      # Resource metric collection engine
 │   ├── alerts.py         # Alerting logic and threshold checks
 │   ├── reporter.py       # Terminal & JSON reporting formatters
-│   └── cli.py            # CLI parser, signal handling, and main loop
+│   ├── cli.py            # CLI parser, signal handling, and main loop
+│   └── db/               # Database persistence & AWS Secrets Manager
+│       ├── __init__.py
+│       ├── config.py     # Secrets Manager retrieval & .env parsing
+│       ├── models.py     # SQLAlchemy ORM (system_metrics, vps_scaling_alerts)
+│       ├── repository.py # Metric & scaling alert persistence
+│       └── session.py    # Engine & connection pool management
 └── tests/                # Unit tests
     ├── __init__.py
     ├── test_alerts.py
     ├── test_collector.py
     ├── test_identity.py
-    └── test_reporter.py
+    ├── test_reporter.py
+    ├── test_db_config.py
+    ├── test_db_models.py
+    ├── test_db_repository.py
+    └── test_cli_db_integration.py
 ```
 
 ---

@@ -7,6 +7,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 DOCKER_USER="${DOCKER_USER:-sah1}"
 DOCKER_PAT="${1:-${DOCKER_PAT:-}}"
+export AWS_SECRET_NAME="${2:-${AWS_SECRET_NAME:-}}"
 RAW_COMPOSE_URL="https://raw.githubusercontent.com/Shaikhabdulh/terraform-project/main/monitor-app/docker-compose.yml"
 APP_DIR="/opt/monitor-app"
 

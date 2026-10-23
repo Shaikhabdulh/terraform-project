@@ -46,5 +46,6 @@ bash scripts/build-and-push.sh "<YOUR_PUSH_TOKEN>"
 ## Documentation
 
 For full guides and architecture specifications, visit the **[Documentation Index](./docs/index.md)**:
+- [AWS Secrets Manager & RDS MySQL Guide](./docs/aws-secrets-manager-rds.md)
 - [EC2 & Cloud-Init Deployment](./docs/ec2-deployment.md)
 - [Security & Hardening Profile](./docs/security.md)

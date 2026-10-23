@@ -26,6 +26,8 @@ Thumbs.db
 
 # Secrets, tokens, and credentials (NEVER commit to VCS)
 .env*
+!.env.example
+!.env*.example
 *.secrets*
 *.tokens*
 .docker-tokens*

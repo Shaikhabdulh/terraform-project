@@ -54,7 +54,8 @@ def persist_sample(session_factory: sessionmaker, sample: Dict[str, Any]) -> boo
     try:
         dt = _parse_timestamp(sample.get("ts"))
         hostname = sample.get("hostname", "unknown")
-        ec2 = sample.get("ec2") or {}
+        ec2 = sample.get("ec2") or sample.get("instance") or {}
+        public_ip = ec2.get("public_ip") or sample.get("public_ip")
         cpu = sample.get("cpu") or {}
         mem = sample.get("memory") or {}
         swap = sample.get("swap") or {}
@@ -76,7 +77,7 @@ def persist_sample(session_factory: sessionmaker, sample: Dict[str, Any]) -> boo
             instance_id=ec2.get("instance_id"),
             instance_type=ec2.get("instance_type"),
             availability_zone=ec2.get("availability_zone"),
-            public_ip=ec2.get("public_ip"),
+            public_ip=public_ip,
             uptime_hours=sample.get("uptime_hours"),
             cpu_percent=float(cpu.get("percent", 0.0)),
             memory_percent=float(mem.get("percent", 0.0)),

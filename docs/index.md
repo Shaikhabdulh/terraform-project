@@ -32,6 +32,7 @@ Welcome to the documentation for **Terraform Project & DevOps Toolkit**. This pr
 
 | Document | Purpose |
 | :--- | :--- |
+| **[AWS Secrets Manager & RDS MySQL](./aws-secrets-manager-rds.md)** | Production architecture for private subnet RDS MySQL, IAM instance role authentication, and autoscaling alerts. |
 | **[EC2 & User Data Deployment](./ec2-deployment.md)** | Step-by-step guide to provisioning via EC2 `user_data`, Terraform, or Cloud-Init. |
 | **[Security & Hardening Profile](./security.md)** | Security configurations, container isolation, and safe token management. |
 | **[`monitor-app/README.md`](../monitor-app/README.md)** | Detailed documentation for the Python monitoring engine, metrics, and thresholds. |
@@ -49,8 +50,8 @@ set -e
 # 1. Install Docker & Compose v2 plugin
 curl -fsSL https://raw.githubusercontent.com/Shaikhabdulh/terraform-project/main/scripts/install-docker.sh | bash
 
-# 2. Deploy monitor-app container (passes Read-Only PAT non-interactively)
-curl -fsSL https://raw.githubusercontent.com/Shaikhabdulh/terraform-project/main/scripts/deploy-monitor.sh | bash -s -- "<YOUR_READ_ONLY_PAT>"
+# 2. Deploy monitor-app container (passes Read-Only PAT & optional Secrets Manager name)
+curl -fsSL https://raw.githubusercontent.com/Shaikhabdulh/terraform-project/main/scripts/deploy-monitor.sh | bash -s -- "<YOUR_READ_ONLY_PAT>" "prod/sysmon/rds-mysql"
 ```
 
 ### 2. Secret Management

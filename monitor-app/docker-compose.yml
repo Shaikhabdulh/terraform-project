@@ -17,13 +17,25 @@ services:
     tmpfs:
       - /tmp:rw,noexec,nosuid,size=64m
 
-    # Configuration via environment variables
+    # Configuration via environment variables & optional .env file
+    env_file:
+      - path: .env
+        required: false
+
     environment:
       - SYSMON_INTERVAL=10
       - SYSMON_CPU_THRESHOLD=85.0
       - SYSMON_MEM_THRESHOLD=85.0
       - SYSMON_DISK_THRESHOLD=85.0
       - SYSMON_JSON=true
+      - AWS_SECRET_NAME=${AWS_SECRET_NAME:-}
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - DB_HOST=${DB_HOST:-}
+      - DB_PORT=${DB_PORT:-3306}
+      - DB_USER=${DB_USER:-}
+      - DB_PASSWORD=${DB_PASSWORD:-}
+      - DB_NAME=${DB_NAME:-}
+      - DB_SSL_CA=${DB_SSL_CA:-}
 
     # Log rotation limits to prevent container logs from consuming disk space
     logging:
