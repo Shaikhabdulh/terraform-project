@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - 'monitor-app/**'
+      - 'monitor-app/**' #Run only if any changes to this path
       - '.github/workflows/docker-build-push.yml'
   workflow_dispatch:
 
