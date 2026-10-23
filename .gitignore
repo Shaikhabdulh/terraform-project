@@ -23,3 +23,9 @@ build/
 Thumbs.db
 *.swp
 *.log
+
+# Secrets, tokens, and credentials (NEVER commit to VCS)
+.env*
+*.secrets*
+*.tokens*
+.docker-tokens*
