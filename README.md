@@ -5,20 +5,22 @@ A repository containing modular infrastructure monitoring tools, deployment scri
 ## Components
 
 - **[`monitor-app/`](./monitor-app/)**: Modular Linux & AWS EC2 system resource monitor (CPU, memory, disk, network, process tracking, AWS IMDSv2 metadata). Features a hardened Dockerfile and Docker Compose setup in secure mode.
-- **[`scripts/install-docker.sh`](./scripts/install-docker.sh)**: Non-interactive unattended installer for Docker Engine and Docker Compose v2 for Ubuntu and Debian.
-- **[`scripts/deploy-monitor.sh`](./scripts/deploy-monitor.sh)**: One-command automated deployment script for launching `monitor-app` with Docker Compose.
+- **[`scripts/install-docker.sh`](./scripts/install-docker.sh)**: Minimal, non-interactive Docker Engine & Compose v2 installer for Ubuntu and Debian.
+- **[`scripts/deploy-monitor.sh`](./scripts/deploy-monitor.sh)**: Minimal unattended deployer for `monitor-app`, optimized for EC2 `user_data` or remote one-line execution.
+- **[`scripts/build-and-push.sh`](./scripts/build-and-push.sh)**: Minimal build and push script for publishing `sah1/practice:monitor-app` to Docker Hub.
 
 ## Getting Started
 
-### 1. Automated Non-Interactive Deployment (Ubuntu / Debian)
-Run the deploy script directly (fetches Compose configuration and pulls `sah1/practice:monitor-app` from Docker Hub in secure mode):
+### 1. EC2 `user_data` / Unattended Deployment (Ubuntu)
+Run both steps unattended in an EC2 launch template or bash script:
 
 ```bash
-# If Docker is not installed yet:
+#!/bin/bash
+# Install Docker
 curl -fsSL https://raw.githubusercontent.com/Shaikhabdulh/terraform-project/main/scripts/install-docker.sh | bash
 
-# Deploy monitor-app (fully non-interactive):
-curl -fsSL https://raw.githubusercontent.com/Shaikhabdulh/terraform-project/main/scripts/deploy-monitor.sh | bash
+# Deploy monitor-app non-interactively (optionally pass Read-Only PAT if needed)
+curl -fsSL https://raw.githubusercontent.com/Shaikhabdulh/terraform-project/main/scripts/deploy-monitor.sh | bash -s -- "dckr_pat_..."
 ```
 
 ### 2. Manual / Local Development
@@ -29,14 +31,6 @@ python main.py --once
 ```
 
 ### 3. Build & Push Image to Docker Hub
-To publish a new version of `sah1/practice:monitor-app`:
-
-- **Linux / Bash**:
-  ```bash
-  bash scripts/build-and-push.sh
-  ```
-- **Windows PowerShell**:
-  ```powershell
-  .\scripts\build-and-push.ps1
-  ```
-*(Or push commits to `main` — GitHub Actions automatically builds and pushes the image via `.github/workflows/docker-build-push.yml`)*
+```bash
+bash scripts/build-and-push.sh "YOUR_PUSH_TOKEN"
+```
