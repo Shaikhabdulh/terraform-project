@@ -1,0 +1,16 @@
+[project]
+name = "monitor-app"
+version = "0.1.0"
+description = "Simple Linux / AWS EC2 system and resource monitor"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "psutil>=5.9.0",
+]
+
+[project.scripts]
+sysmon = "app.cli:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
