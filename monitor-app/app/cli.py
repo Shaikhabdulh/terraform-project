@@ -16,6 +16,9 @@ from app.config import (
     DEFAULT_MEM_THRESHOLD,
     setup_logging,
 )
+from app.db.config import get_db_settings
+from app.db.repository import persist_sample
+from app.db.session import create_db_engine, get_session_factory, init_db
 from app.identity import get_instance_info, get_private_ips, get_public_ip
 from app.reporter import format_json, print_report
 
@@ -76,6 +79,24 @@ def main(argv=None):
 
     setup_logging()
 
+    # Initialize database if credentials are configured (AWS Secrets Manager or .env)
+    session_factory = None
+    try:
+        db_settings = get_db_settings()
+        if db_settings:
+            engine = create_db_engine(db_settings)
+            init_db(engine)
+            session_factory = get_session_factory(engine)
+            log.info(
+                "Database configured: connected to %s:%s/%s",
+                db_settings.host,
+                db_settings.port,
+                db_settings.database,
+            )
+    except Exception as exc:
+        log.warning("Database initialization skipped or failed: %s", exc)
+        session_factory = None
+
     running = True
 
     def stop(*_):
@@ -111,6 +132,12 @@ def main(argv=None):
         s["alerts"] = check_thresholds(s, args)
         for a in s["alerts"]:
             log.warning("ALERT: %s", a)
+
+        if session_factory:
+            try:
+                persist_sample(session_factory, s)
+            except Exception as exc:
+                log.warning("Failed to persist sample to database: %s", exc)
 
         if args.json:
             print(format_json(s), flush=True)
