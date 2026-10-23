@@ -1,10 +1,7 @@
 services:
   sysmon:
     container_name: monitor-app
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: monitor-app:latest
+    image: sah1/practice:monitor-app #Private Docker Repo
     restart: unless-stopped
 
     # Host namespaces required for monitoring the host OS rather than isolated container metrics

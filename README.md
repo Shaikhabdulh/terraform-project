@@ -10,14 +10,33 @@ A repository containing modular infrastructure monitoring tools, deployment scri
 
 ## Getting Started
 
-### 1. System Monitor
+### 1. Automated Non-Interactive Deployment (Ubuntu / Debian)
+Run the deploy script directly (fetches Compose configuration and pulls `sah1/practice:monitor-app` from Docker Hub in secure mode):
+
+```bash
+# If Docker is not installed yet:
+curl -fsSL https://raw.githubusercontent.com/Shaikhabdulh/terraform-project/main/scripts/install-docker.sh | bash
+
+# Deploy monitor-app (fully non-interactive):
+curl -fsSL https://raw.githubusercontent.com/Shaikhabdulh/terraform-project/main/scripts/deploy-monitor.sh | bash
+```
+
+### 2. Manual / Local Development
 ```bash
 cd monitor-app
 pip install -r requirements.txt
 python main.py --once
 ```
 
-### 2. Docker & Compose v2 Installer
-```bash
-curl -fsSL https://raw.githubusercontent.com/Shaikhabdulh/terraform-project/main/scripts/install-docker.sh | bash
-```
+### 3. Build & Push Image to Docker Hub
+To publish a new version of `sah1/practice:monitor-app`:
+
+- **Linux / Bash**:
+  ```bash
+  bash scripts/build-and-push.sh
+  ```
+- **Windows PowerShell**:
+  ```powershell
+  .\scripts\build-and-push.ps1
+  ```
+*(Or push commits to `main` — GitHub Actions automatically builds and pushes the image via `.github/workflows/docker-build-push.yml`)*

@@ -108,17 +108,25 @@ python main.py --cpu 90 --mem 80 --disk 85 --interval 15
 
 The application is fully containerized and pre-configured to monitor the host system securely:
 
-### 1. One-Command Deploy (via script)
+### 1. One-Command Non-Interactive Deploy (via script)
 ```bash
 bash ../scripts/deploy-monitor.sh
+```
+
+Or standalone via remote pipe (no clone needed):
+```bash
+curl -fsSL https://raw.githubusercontent.com/Shaikhabdulh/terraform-project/main/scripts/deploy-monitor.sh | bash
 ```
 
 ### 2. Manual Docker Compose
 ```bash
 cd monitor-app
 
-# Build and start in background
-docker compose up -d --build
+# Pull published image from Docker Hub
+docker compose pull
+
+# Start container in background (secure mode)
+docker compose up -d
 
 # View real-time streaming JSON logs
 docker compose logs -f
